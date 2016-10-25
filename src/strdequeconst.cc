@@ -1,5 +1,4 @@
 #include <iostream>
-#include <deque>
 #include "strdeque.h"
 
 #ifndef NDEBUG

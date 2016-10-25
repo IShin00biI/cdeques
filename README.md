@@ -2,6 +2,8 @@
 
 *initialization fiasco chyba zrobione
 
-*chyba dobrze by bylo opakowac strumien diagnostyczny, ale trzeba oddzielnie w obu implementacjach (?)
+*chyba dobrze by bylo opakowac strumien diagnostyczny
 
-*linie wyjscia diagnostycznego sa takie jak w przykladzie, ale ich kombinacje/czestotliwosc moga sie roznic
+*linie wyjscia diagnostycznego sa takie jak w przykladzie,
+ale ich kombinacje/czestotliwosc moga sie roznic(staram sie dosc mocno upodabniac)
+

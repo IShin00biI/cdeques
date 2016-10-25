@@ -1,15 +1,11 @@
 #ifndef CDEQUES_STRDEQUE_H
 #define CDEQUES_STRDEQUE_H
 
-#include <cstdlib>
-
 unsigned long strdeque_new();
 
 void strdeque_delete(unsigned long id);
 
 size_t strdeque_size(unsigned long id);
-
-void strdeque_insert_at(unsigned long id, size_t pos, const char* value);
 
 void strdeque_insert_at(unsigned long id, size_t pos, const char* value);
 
