@@ -1,0 +1,3 @@
+src/test.sh
+src/strdeque_test*
+src/*.o

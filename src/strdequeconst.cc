@@ -1,5 +1,6 @@
 #include <iostream>
 #include "strdeque.h"
+#include "strdequeconst.h"
 
 #ifndef NDEBUG
 const bool DEBUG = true;
@@ -14,8 +15,14 @@ static unsigned long init_emptystrdeque() {
 	return id;
 }
 
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 extern unsigned long emptystrdeque() {
 	if(DEBUG) std::cerr << "emptystrdeque()" << std::endl;
 	static const unsigned long id = init_emptystrdeque();
 	return id;
 }
+// #ifdef __cplusplus
+// }
+// #endif

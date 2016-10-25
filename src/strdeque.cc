@@ -30,11 +30,6 @@ static std::string string_id(unsigned long& id) {
 	return (id == emptystrdeque() ? "ConstEmpty" : std::to_string(id));
 }
 
-/* static std::string string_id(unsigned long& id) {
-	std::string bare = string_id_bare(id);
-	return (id == emptystrdeque() ? bare : "deque " + bare);
-} */
-
 static void print_init(const std::string& func_name, const std::string& args) {
 	if(DEBUG) std::cerr << "Starting " << func_name << args << " {" << std::endl;
 	return;
@@ -63,8 +58,7 @@ extern unsigned long strdeque_new() {
 	static unsigned long next_id = 0;
 	assert(next_id < max_u_long());
 	assert(!strdeque_exists(next_id));
-	deque_map all_deques = all_deques();
-	all_deques.insert(std::pair<unsigned long, strdeque>(next_id, strdeque()));
+	all_deques().insert(std::pair<unsigned long, strdeque>(next_id, strdeque()));
 	unsigned long current_id = next_id++;
 // TODO	if(DEBUG) std::cerr << "strdeque_new: deque " << current_id << " created" << std::endl;
 	return current_id;
@@ -86,7 +80,7 @@ extern size_t strdeque_size(unsigned long id) {
 	if(!strdeque_exists(id)) return 0;
 	deque_map::iterator found = all_deques().find(id);
 	size_t result = found->second.size();
-	//TODO if(DEBUG) std::cerr << "strdeque_size: " << string_id << " contains " << result << " elements" << std::endl;
+	//TODO if(DEBUG) std::cerr << "strdeque_size: " << string_id_local << " contains " << result << " elements" << std::endl;
 	return result;
 }
 
@@ -109,88 +103,79 @@ extern void strdeque_insert_at(unsigned long id, size_t pos, const char* value) 
 	if(pos == deque_size - 1) all_deques()[id].push_back(string_value);
 	else if(pos == 0) all_deques()[id].push_front(string_value);
 	else all_deques()[id].insert(all_deques()[id].begin() + pos, string_value);
-	if(DEBUG) std::cerr << "strdeque_insert_at: " << string_id << ", element " << string_value << " inserted at " << pos << std::endl;
+	if(DEBUG) std::cerr << "strdeque_insert_at: " << string_id(id) << ", element " << string_value << " inserted at " << pos << std::endl;
 }
 
 extern void strdeque_remove_at(unsigned long id, size_t pos) {
-	if(DEBUG) {
-		std::string string_id_bare = string_id_bare(id);
-		std::string string_id = string_id(id);
-		std::cerr << "strdeque_remove_at(" << string_id_bare << ", " << pos << ")" << std::endl;
-	}
+	std::string string_id_local = string_id(id);
+	if(DEBUG) std::cerr << "strdeque_remove_at(" << string_id_local << ", " << pos << ")" << std::endl;
+
 	if(id == emptystrdeque()) {
 		if(DEBUG) std::cerr << "strdeque_remove_at: attempt to remove from the Empty Deque" << std::endl;
 		return;
 	}
 	deque_map::iterator found = all_deques().find(id);
 	if(found == all_deques().end()) {
-		if(DEBUG) std::cerr << "strdeque_remove_at: " << string_id << " does not exist" << std::endl;
+		if(DEBUG) std::cerr << "strdeque_remove_at: " << string_id_local << " does not exist" << std::endl;
 		return;
 	}
 	size_t deque_size = all_deques()[id].size();
 	if(deque_size < pos) {
-		if (DEBUG)
-			std::cerr << "strdeque_remove_at: " << string_id << " does not contain an element at " << pos << std::endl;
+		if (DEBUG) std::cerr << "strdeque_remove_at: " << string_id_local << " does not contain an element at " << pos << std::endl;
 		return;
 	}
 	if(pos == deque_size - 1) all_deques()[id].pop_back();
 	else if(pos == 0) all_deques()[id].pop_front();
 	else all_deques()[id].erase(all_deques()[id].begin() + pos);
-	if(DEBUG) std::cerr << "strdeque_remove_at: " << string_id << ", element at " << pos << " removed" << std::endl;
+	// if(DEBUG) std::cerr << "strdeque_remove_at: " << string_id_local << ", element at " << pos << " removed" << std::endl;
 }
 
 extern const char* strdeque_get_at(unsigned long id, size_t pos) {
-	if(DEBUG) {
-		std::string string_id_bare = string_id_bare(id);
-		std::string string_id = string_id(id);
-		std::cerr << "strdeque_get_at(" << string_id_bare << ", " << pos << ")" << std::endl;
-	}
+	std::string string_id_local = string_id(id);
+	if(DEBUG) std::cerr << "strdeque_get_at(" << string_id_local << ", " << pos << ")" << std::endl;
+
 	deque_map::iterator found = all_deques().find(id);
 	if(found == all_deques().end()) {
-		if(DEBUG) std::cerr << "strdeque_get_at: " << string_id << " does not exist" << std::endl;
+		if(DEBUG) std::cerr << "strdeque_get_at: " << string_id_local << " does not exist" << std::endl;
 		return NULL;
 	}
 	size_t deque_size = all_deques()[id].size();
 	if(deque_size < pos) {
 		if (DEBUG)
-			std::cerr << "strdeque_get_at: " << string_id << " does not contain an element at " << pos << std::endl;
+			std::cerr << "strdeque_get_at: " << string_id_local << " does not contain an element at " << pos << std::endl;
 		return NULL;
 	}
 	std::string string_value = *(all_deques()[id].begin() + pos);
 	const char* char_value = string_value.c_str();
 	assert(char_value != NULL);
-	if (DEBUG)
-		std::cerr << "strdeque_get_at: " << string_id << ", element at " << pos << " is " << string_value << std::endl;
+
+	if (DEBUG) std::cerr << "strdeque_get_at: " << string_id_local << ", element at " << pos << " is " << string_value << std::endl;
 	return char_value;
 }
 
 extern void strdeque_clear(unsigned long id) {
-	if(DEBUG) {
-		std::string string_id_bare = string_id_bare(id);
-		std::string string_id = string_id(id);
-		std::cerr << "strdeque_clear(" << string_id_bare << ")" << std::endl;
-	}
+	std::string string_id_local = string_id(id);
+	if(DEBUG) std::cerr << "strdeque_clear(" << string_id_local << ")" << std::endl;
+
 	if(id == emptystrdeque()) {
 		if (DEBUG) std::cerr << "strdeque_clear: attempt to clear the Empty Deque" << std::endl;
 		return;
 	}
 	deque_map::iterator found = all_deques().find(id);
 	if(found == all_deques().end()) {
-		if(DEBUG) std::cerr << "strdeque_clear: " << string_id << " does not exist" << std::endl;
+		if(DEBUG) std::cerr << "strdeque_clear: " << string_id_local << " does not exist" << std::endl;
 		return;
 	}
 	found->second.clear();
-	if(DEBUG) std::cerr << "strdeque_clear: " << string_id << " cleared" << std::endl;
+
+	if(DEBUG) std::cerr << "strdeque_clear: " << string_id_local << " cleared" << std::endl;
 }
 
-extern void strdeque_comp(unsigned long id1, unsigned long id2) {
-	if(DEBUG) {
-		std::string string_id_bare1 = string_id_bare(id1);
-		std::string string_id1 = string_id(id1);
-		std::string string_id_bare2 = string_id_bare(id2);
-		std::string string_id2 = string_id(id2);
-		std::cerr << "strdeque_clear(" << string_id_bare1 << ", " << string_id_bare2 << ")" << std::endl;
-	}
+extern int strdeque_comp(unsigned long id1, unsigned long id2) {
+	std::string string_id1 = string_id(id1);
+	std::string string_id2 = string_id(id2);
+	if(DEBUG) std::cerr << "strdeque_clear(" << string_id1 << ", " << string_id2 << ")" << std::endl;
+
 	deque_map::iterator found1 = all_deques().find(id1);
 	if(found1 == all_deques().end()) {
 		if(DEBUG) std::cerr << "strdeque_clear: " << string_id1 << " does not exist" << std::endl;
@@ -201,5 +186,7 @@ extern void strdeque_comp(unsigned long id1, unsigned long id2) {
 		if(DEBUG) std::cerr << "strdeque_clear: " << string_id2 << " does not exist" << std::endl;
 		found2 = all_deques().find(emptystrdeque());
 	}
-	//porownanie
+	//TODO: porownanie
+
+	return 0;
 }
