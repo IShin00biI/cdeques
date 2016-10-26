@@ -1,7 +1,9 @@
 #include <iostream>
 #include <deque>
 #include <unordered_map>
-#include <string>
+// #include <string>
+#include <cstring>
+#include <algorithm>
 #include <cassert>
 #include <limits>
 #include "strdeque.h"
@@ -18,6 +20,7 @@ typedef std::unordered_map<unsigned long, strdeque> deque_map;
 
 static const std::string DSTART = "Starting";
 static const std::string DEXIT = "Exiting";
+static const std::string EMPTYDEQ = "ConstEmpty";
 
 static unsigned long max_u_long() {
 	static const unsigned long max_u_long = std::numeric_limits<unsigned long>::max();
@@ -30,7 +33,7 @@ static deque_map& all_deques() {
 }
 
 static std::string string_id(unsigned long& id) {
-	return (id == emptystrdeque() ? "ConstEmpty" : std::to_string(id));
+	return (id == emptystrdeque() ? EMPTYDEQ : std::to_string(id));
 }
 
 static void print_debug(const std::string& comment, const std::string& func_name, const std::string& args) {
@@ -54,7 +57,7 @@ static bool strdeque_exists(unsigned long& id) {
 
 static bool strdeque_is_const_empty(const std::string& func_name, unsigned long& id) {
 	if(id == emptystrdeque()) {
-		print_debug("Attempting " + func_name + "on deque ConstEmpty", "strdeque_is_const_empty", "");
+		print_debug("Attempting " + func_name + "on " + EMPTYDEQ, "strdeque_is_const_empty", "");
 		return true;
 	}
 	return false;
@@ -68,7 +71,7 @@ extern unsigned long strdeque_new() {
 	static unsigned long next_id = 0;
 	assert(next_id < max_u_long());
 	std::cout << "przed sprawdzeniem istnienia" << std::endl;
-	assert(!strdeque_exists(next_id)); //TODO: CO gdy nie istnieje jeszcze EMptyDEq?
+	// assert(!strdeque_exists(next_id)); //TODO: CO gdy nie istnieje jeszcze EMptyDEq?
 	std::cout << "po sprawdzeniem istnienia, proba wlozenia" << std::endl;
 	all_deques().insert(std::pair<unsigned long, strdeque>(next_id, strdeque()));
 	unsigned long current_id = next_id++;
@@ -121,7 +124,6 @@ extern void strdeque_insert_at(unsigned long id, size_t pos, const char* value) 
 	size_t deque_size = all_deques()[id].size(); //TODO wszystko ponizej
 	if(pos >= deque_size) {
 		pos = deque_size - 1;
-
 	}
 	if(pos == deque_size - 1) all_deques()[id].push_back(string_value);
 	else if(pos == 0) all_deques()[id].push_front(string_value);
@@ -216,19 +218,23 @@ extern int strdeque_comp(unsigned long id1, unsigned long id2) {
 	const std::string args = string_id1 + ", " + string_id2;
 	print_debug(DSTART, func_name, args);
 
-	deque_map::iterator found1 = all_deques().find(id1);
-	if(found1 == all_deques().end()) {
+
+	deque_map::iterator foundIter1 = all_deques().find(id1);
+	if(foundIter1 == all_deques().end()) {
 		print_debug(string_id1 + " does not exist", func_name, args);
-		found1 = all_deques().find(emptystrdeque());
+		foundIter1 = all_deques().find(emptystrdeque());
 	}
-	deque_map::iterator found2 = all_deques().find(id2);
-	if(found2 == all_deques().end()) {
+	strdeque contentId1 = (*foundIter1).second;
+
+	deque_map::iterator foundIter2 = all_deques().find(id2);
+	if(foundIter2 == all_deques().end()) {
 		print_debug(string_id2 + " does not exist", func_name, args);
-		found2 = all_deques().find(emptystrdeque());
+		foundIter2 = all_deques().find(emptystrdeque());
 	}
-	//TODO: porownanie
+	strdeque contentId2 = (*foundIter2).second;
 
 	print_debug(DEXIT, func_name, args);
 
-	return 0;
+	return (int) std::lexicographical_compare<strdeque::iterator>( contentId1.begin(), contentId1.end(), contentId2.begin(), contentId1.end());
+	//TODO: jako ostatni argument w lexicographical_compare można dać komparator, std::strcmp się wywala, więc trzeba sprawdzić czy nie trzeba zrobić komparatora stringów
 }
