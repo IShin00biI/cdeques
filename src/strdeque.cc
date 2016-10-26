@@ -237,7 +237,7 @@ extern int strdeque_comp(unsigned long id1, unsigned long id2) {
 
 	print_debug(DEXIT, func_name, args);
 
-	// return (int) std::lexicographical_compare<strdeque::iterator>( contentId1.begin(), contentId1.end(), contentId2.begin(), contentId2.end());
-	return (int) (contentId1 < contentId2);
+	// return (int) std::lexicographical_compare<strdeque::iterator>(contentId2.begin(), contentId2.end(), contentId1.begin(), contentId1.end());
+	return (contentId1 < contentId2) ? -1 : (contentId1 > contentId2) ? 1 : 0;
 	//TODO: jako ostatni argument w lexicographical_compare można dać komparator, std::strcmp się wywala, więc trzeba sprawdzić czy nie trzeba zrobić komparatora stringów
 }
