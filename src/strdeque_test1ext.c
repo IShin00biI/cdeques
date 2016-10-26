@@ -19,7 +19,7 @@ int main() {
     unsigned long d1, d2, d3;
 
     d1 = strdeque_new();
-    
+
     strdeque_insert_at(d1, 0, "a");
     assert(streq(strdeque_get_at(d1, 0), "a", 2));
 
