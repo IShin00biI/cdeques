@@ -175,7 +175,7 @@ extern const char* strdeque_get_at(unsigned long id, size_t pos) {
 		return NULL;
 	}
 	size_t deque_size = all_deques()[id].size();
-	if(deque_size <= pos) {
+	if(pos >= deque_size || pos < 0 ) {
 		print_debug(string_id_local + " does not contain an element at " + std::to_string(pos), func_name, args);
 		return NULL;
 	}
