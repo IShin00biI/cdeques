@@ -2,7 +2,6 @@
 #include <cstddef>
 #include <cstring>
 #include "cstrdeque"
-#include <iostream>
 
 int streq(const char* s1, const char* s2, size_t len) {
     if (s1 == s2)

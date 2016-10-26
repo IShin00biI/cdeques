@@ -1,3 +1,5 @@
+#include <iostream>
+
 namespace jnp1 {
   #include "strdeque.h"
 }
