@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <cstring>
 #include "cstrdeque"
+#include <iostream>
 
 int streq(const char* s1, const char* s2, size_t len) {
     if (s1 == s2)
@@ -25,6 +26,7 @@ namespace {
 
 int main() {
     const char* str = ::jnp1::strdeque_get_at(id, 0);
+  std::cout << "TUTAJ" << std::endl;
     assert(streq(str, "", 1));
     ::jnp1::strdeque_delete(id);
 }

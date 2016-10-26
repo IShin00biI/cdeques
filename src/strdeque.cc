@@ -57,10 +57,10 @@ static bool strdeque_exists(unsigned long& id) {
 	deque_map::iterator found = all_deques().find(id);
 
 	if(found == all_deques().end()) {
-		print_debug("Deque " + string_id(id) + "exists", func_name, args);
+		print_debug("Deque " + string_id(id) + " exists", func_name, args);
 		return false;
 	}
-	print_debug("Deque " + string_id(id) + "not exists", func_name, args);
+	print_debug("Deque " + string_id(id) + " does not exist", func_name, args);
 	return true;
 }
 
@@ -85,7 +85,7 @@ extern unsigned long strdeque_new() {
 	all_deques().insert(std::pair<unsigned long, strdeque>(next_id, strdeque()));
 	unsigned long current_id = next_id++;
 
-	print_debug("created" + current_id, func_name, args);
+	print_debug(" created" + current_id, func_name, args);
 
 	print_debug(DEXIT, func_name, args);
 	return current_id;
@@ -169,11 +169,8 @@ extern const char* strdeque_get_at(unsigned long id, size_t pos) {
 	const std::string args = string_id_local + ", " + std::to_string(pos);
 	print_debug(DSTART, func_name, args);
 
-	deque_map::iterator found = all_deques().find(id);
-	if(found == all_deques().end()) {
-		print_debug(string_id_local + " does not exist", func_name, args);
-		return NULL;
-	}
+	if(!strdeque_exists(id));
+
 	size_t deque_size = all_deques()[id].size();
 	if(pos >= deque_size || pos < 0 ) {
 		print_debug(string_id_local + " does not contain an element at " + std::to_string(pos), func_name, args);
