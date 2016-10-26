@@ -15,14 +15,9 @@ static unsigned long init_emptystrdeque() {
 	return id;
 }
 
-// #ifdef __cplusplus
-// extern "C" {
-// #endif
 extern unsigned long emptystrdeque() {
-	if(DEBUG) std::cerr << "emptystrdeque()" << std::endl;
+	if(DEBUG) std::cerr << "emptystrdeque() invoked" << std::endl;
 	static const unsigned long id = init_emptystrdeque();
+	if(DEBUG) std::cerr << "emptystrdeque() done with id = " << id  << std::endl;
 	return id;
 }
-// #ifdef __cplusplus
-// }
-// #endif

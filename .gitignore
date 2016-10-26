@@ -1,3 +1,5 @@
 src/test.sh
-src/strdeque_test*
+src/strdeque_test1
+src/strdeque_test2a
+src/strdeque_test2b
 src/*.o

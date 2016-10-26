@@ -40,6 +40,7 @@ static void print_debug(const std::string& comment, const std::string& func_name
 static bool strdeque_exists(unsigned long& id) {
 	static const std::string func_name = "strdeque_exists";
 	static const std::string args = "";
+	print_debug(DSTART, func_name, args);
 
 	deque_map::iterator found = all_deques().find(id);
 
@@ -47,6 +48,7 @@ static bool strdeque_exists(unsigned long& id) {
 		print_debug("Deque " + string_id(id) + "exists", func_name, args);
 		return false;
 	}
+	print_debug("Deque " + string_id(id) + "not exists", func_name, args);
 	return true;
 }
 
@@ -59,13 +61,15 @@ static bool strdeque_is_const_empty(const std::string& func_name, unsigned long&
 }
 
 extern unsigned long strdeque_new() {
-	static const std::string func_name = "strdeque_new()";
+	static const std::string func_name = "strdeque_new";
 	static const std::string args = "";
 	print_debug(DSTART, func_name, args);
 
 	static unsigned long next_id = 0;
 	assert(next_id < max_u_long());
-	assert(!strdeque_exists(next_id));
+	std::cout << "przed sprawdzeniem istnienia" << std::endl;
+	assert(!strdeque_exists(next_id)); //TODO: CO gdy nie istnieje jeszcze EMptyDEq?
+	std::cout << "po sprawdzeniem istnienia, proba wlozenia" << std::endl;
 	all_deques().insert(std::pair<unsigned long, strdeque>(next_id, strdeque()));
 	unsigned long current_id = next_id++;
 
@@ -106,7 +110,7 @@ extern void strdeque_insert_at(unsigned long id, size_t pos, const char* value) 
 	std::string string_value = value == NULL ? "NULL" : std::string(value);
 
 	static const std::string func_name = "strdeque_insert_at";
-	const std::string args = string_id(id) + ", " + std::to_string(pos) + ", " + string_value ;
+	const std::string args = string_id(id) + ", " + std::to_string(pos) + ", " + string_value;
 	print_debug(DSTART, func_name, args);
 
 	if(value == NULL) {
