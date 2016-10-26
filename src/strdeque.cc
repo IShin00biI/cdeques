@@ -40,6 +40,15 @@ static void print_debug(const std::string& comment, const std::string& func_name
 	if(DEBUG) std::cerr << func_name << " | " << args << " | " << comment << std::endl;
 }
 
+
+static void print_deque_debug(strdeque de) {
+	std::cerr << "Deque: ";
+	for(strdeque::iterator it = de.begin(); it != de.end(); ++it) {
+ 		std::cerr << *it << " ";
+	}
+	std::cerr << std::endl;
+}
+
 static bool strdeque_exists(unsigned long& id) {
 	static const std::string func_name = "strdeque_exists";
 	static const std::string args = "";
@@ -209,13 +218,14 @@ extern int strdeque_comp(unsigned long id1, unsigned long id2) {
 	const std::string args = string_id1 + ", " + string_id2;
 	print_debug(DSTART, func_name, args);
 
-
 	deque_map::iterator foundIter1 = all_deques().find(id1);
 	if(foundIter1 == all_deques().end()) {
 		print_debug(string_id1 + " does not exist", func_name, args);
 		foundIter1 = all_deques().find(emptystrdeque());
 	}
+
 	strdeque contentId1 = (*foundIter1).second;
+	print_deque_debug(contentId1);
 
 	deque_map::iterator foundIter2 = all_deques().find(id2);
 	if(foundIter2 == all_deques().end()) {
@@ -223,9 +233,11 @@ extern int strdeque_comp(unsigned long id1, unsigned long id2) {
 		foundIter2 = all_deques().find(emptystrdeque());
 	}
 	strdeque contentId2 = (*foundIter2).second;
+	print_deque_debug(contentId2);
 
 	print_debug(DEXIT, func_name, args);
 
-	return (int) std::lexicographical_compare<strdeque::iterator>( contentId1.begin(), contentId1.end(), contentId2.begin(), contentId1.end());
+	// return (int) std::lexicographical_compare<strdeque::iterator>( contentId1.begin(), contentId1.end(), contentId2.begin(), contentId2.end());
+	return (int) (contentId1 < contentId2);
 	//TODO: jako ostatni argument w lexicographical_compare można dać komparator, std::strcmp się wywala, więc trzeba sprawdzić czy nie trzeba zrobić komparatora stringów
 }

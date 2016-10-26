@@ -11,13 +11,13 @@ const bool DEBUG = false;
 static unsigned long init_emptystrdeque() {
 	if(DEBUG) std::cerr << "strdequeconst init invoked" << std::endl;
 	unsigned long id = strdeque_new();
-	std::cerr << "strdeque_const init finished" << std::endl;
+	if(DEBUG) std::cerr << "strdeque_const init finished" << std::endl;
 	return id;
 }
 
 extern unsigned long emptystrdeque() {
-	if(DEBUG) std::cerr << "emptystrdeque() invoked" << std::endl;
+	// if(DEBUG) std::cerr << "emptystrdeque() invoked" << std::endl;
 	static const unsigned long id = init_emptystrdeque();
-	if(DEBUG) std::cerr << "emptystrdeque() done with id = " << id  << std::endl;
+	// if(DEBUG) std::cerr << "emptystrdeque() done with id = " << id  << std::endl;
 	return id;
 }
