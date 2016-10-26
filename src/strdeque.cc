@@ -122,10 +122,10 @@ extern void strdeque_insert_at(unsigned long id, size_t pos, const char* value) 
 	}
 	if(strdeque_is_const_empty(func_name, id) || !strdeque_exists(id)) return;
 	size_t deque_size = all_deques()[id].size(); //TODO wszystko ponizej
-	if(pos >= deque_size) {
-		pos = deque_size - 1;
+	if(pos > deque_size) {
+		pos = deque_size;
 	}
-	if(pos == deque_size - 1) all_deques()[id].push_back(string_value);
+	if(pos == deque_size) all_deques()[id].push_back(string_value);
 	else if(pos == 0) all_deques()[id].push_front(string_value);
 	else all_deques()[id].insert(all_deques()[id].begin() + pos, string_value);
 
