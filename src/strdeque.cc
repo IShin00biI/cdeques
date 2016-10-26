@@ -57,10 +57,10 @@ static bool strdeque_exists(unsigned long& id) {
 	deque_map::iterator found = all_deques().find(id);
 
 	if(found == all_deques().end()) {
-		print_debug("Deque " + string_id(id) + " exists", func_name, args);
+		print_debug("Deque " + string_id(id) + " does not exist", func_name, args);
 		return false;
 	}
-	print_debug("Deque " + string_id(id) + " does not exist", func_name, args);
+	print_debug("Deque " + string_id(id) + " exists", func_name, args);
 	return true;
 }
 
