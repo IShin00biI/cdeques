@@ -26,7 +26,6 @@ namespace {
 
 int main() {
     const char* str = ::jnp1::strdeque_get_at(id, 0);
-  std::cout << "TUTAJ" << std::endl;
     assert(streq(str, "", 1));
     ::jnp1::strdeque_delete(id);
 }

@@ -180,7 +180,7 @@ extern const char* strdeque_get_at(unsigned long id, size_t pos) {
 	const char* char_value = string_value.c_str();
 	assert(char_value != NULL);
 
-	print_debug(string_id_local + ", element at " + std::to_string(pos) + " is " + string_value, func_name, args);
+	print_debug(string_id_local + ", element at " + std::to_string(pos) + " is >>" + string_value + "<<", func_name, args);
 	print_debug(DEXIT, func_name, args);
 	return char_value;
 }
