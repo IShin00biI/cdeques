@@ -9,13 +9,14 @@ const bool DEBUG = false;
 #endif
 
 static unsigned long init_emptystrdeque() {
-	if(DEBUG) std::cerr << "strdequeconst init invoked" << std::endl;
+	if(DEBUG) std::cerr << "ConstEmpty initialisation: starting" << std::endl;
 	unsigned long id = strdeque_new();
-	if(DEBUG) std::cerr << "strdeque_const init finished" << std::endl;
+	if(DEBUG) std::cerr << "ConstEmpty initialisation: exiting with id = " << id << std::endl;
 	return id;
 }
 
 extern unsigned long emptystrdeque() {
+	std::ios_base::Init();
 	// if(DEBUG) std::cerr << "emptystrdeque() invoked" << std::endl;
 	static const unsigned long id = init_emptystrdeque();
 	// if(DEBUG) std::cerr << "emptystrdeque() done with id = " << id  << std::endl;
