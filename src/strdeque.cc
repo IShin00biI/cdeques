@@ -140,18 +140,9 @@ extern void strdeque_remove_at(unsigned long id, size_t pos) {
 	print_debug(DSTART, func_name, args);
 
 	std::string string_id_local = string_id(id);
-
-	if(id == emptystrdeque()) {
-		print_debug("attempt to remove from Empty", func_name, args);
-		return;
-	}
-	deque_map::iterator found = all_deques().find(id);
-	if(found == all_deques().end()) {
-		print_debug(string_id_local + " does not exist", func_name, args);
-		return;
-	}
+	if(strdeque_is_const_empty(func_name, id) || !strdeque_exists(id)) return;
 	size_t deque_size = all_deques()[id].size();
-	if(deque_size < pos) {
+	if(deque_size <= pos || pos < 0) {
 		print_debug(string_id_local + " does not contain an element at " + std::to_string(pos), func_name, args);
 		return;
 	}
