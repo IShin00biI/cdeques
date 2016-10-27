@@ -15,7 +15,9 @@ static unsigned long init_emptystrdeque() {
 	return id;
 }
 
-// Zwraca identyfikator pustej kolejki dwustronnej, do której nic nie można wstawiać i z której nic nie można usuwać.
+/* Zwraca identyfikator pustej kolejki dwustronnej,
+ * do której nic nie można wstawiać i z której nic nie można usuwać.
+ */
 extern unsigned long emptystrdeque() {
 	std::ios_base::Init();
 	static const unsigned long id = init_emptystrdeque();
