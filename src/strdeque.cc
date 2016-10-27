@@ -64,6 +64,7 @@ static bool strdeque_exists(const std::string& func_name, const std::string& arg
 		return false;
 	}
 	print_debug(func_name, args, string_id(id) + " exists");
+
 	return true;
 }
 
@@ -81,10 +82,9 @@ extern unsigned long strdeque_new() {
 	static const std::string func_name = "strdeque_new";
 	static const std::string args = "";
 	print_debug(func_name, args, DSTART());
-	//all_deques();
+
 	static unsigned long next_id = 0;
-	assert(next_id < max_u_long());
-	//assert(!strdeque_exists(next_id)); //TODO: CO gdy nie istnieje jeszcze EMptyDEq?
+	if(DEBUG) assert(next_id < max_u_long());
 	all_deques().insert(std::pair<unsigned long, strdeque>(next_id, strdeque()));
 	unsigned long current_id = next_id++;
 
@@ -105,6 +105,7 @@ extern void strdeque_delete(unsigned long id) {
 		all_deques().erase(found);
 		print_debug(func_name, args, string_id(id) + " deleted");
 	}
+
 	print_debug(func_name, args, DEXIT());
 }
 
@@ -113,15 +114,13 @@ extern size_t strdeque_size(unsigned long id) {
 	static const std::string func_name = "strdeque_size";
 	const std::string args = string_id(id);
 	print_debug(func_name, args, DSTART());
+
 	size_t result;
 	if(!strdeque_exists(func_name, args, id)) result = 0;
-	else {
-		result = all_deques()[id].size();
+	else  result = all_deques()[id].size();
+	print_debug(func_name, args, string_id(id) + " contains " + std::to_string(result) + " elements");
 
-		print_debug(func_name, args, string_id(id) + " contains " + std::to_string(result) + " elements");
-
-		print_debug(func_name, args, DEXIT());
-	}
+	print_debug(func_name, args, DEXIT());
 	return result;
 }
 
@@ -147,6 +146,7 @@ extern void strdeque_insert_at(unsigned long id, size_t pos, const char* value) 
 		print_debug(func_name, args,
 								string_id(id) + ", element \"" + string_value + "\" inserted at " + std::to_string(pos));
 	}
+
 	print_debug(func_name, args, DEXIT());
 }
 
@@ -155,6 +155,8 @@ extern void strdeque_remove_at(unsigned long id, size_t pos) {
 	static const std::string func_name = "strdeque_remove_at";
 	const std::string args = string_id(id) + ", " + std::to_string(pos);
 	print_debug(func_name, args, DSTART());
+
+	if(DEBUG) assert(pos >= 0);
 
 	std::string string_id_local = string_id(id);
 	if(!strdeque_is_const_empty(func_name, args, id) && strdeque_exists(func_name, args, id)) {
@@ -168,6 +170,7 @@ extern void strdeque_remove_at(unsigned long id, size_t pos) {
 		else all_deques()[id].erase(all_deques()[id].begin() + pos);
 		print_debug(func_name, args, string_id(id) + ", removed element at " + std::to_string(pos));
 	}
+
 	print_debug(func_name, args, DEXIT());
 }
 
@@ -178,6 +181,9 @@ extern const char* strdeque_get_at(unsigned long id, size_t pos) {
 	static const std::string func_name = "strdeque_get_at";
 	const std::string args = string_id_local + ", " + std::to_string(pos);
 	print_debug(func_name, args, DSTART());
+
+	if(DEBUG) assert(pos >= 0);
+
 	const char* char_value;
 	if(!strdeque_exists(func_name, args, id)) char_value = NULL;
 	else {
@@ -188,11 +194,12 @@ extern const char* strdeque_get_at(unsigned long id, size_t pos) {
 		}
 		std::string string_value = *(all_deques()[id].begin() + pos);
 		char_value = string_value.c_str();
-		assert(char_value != NULL);
+		if(DEBUG) assert(char_value != NULL);
 
 		print_debug(func_name, args,
 								string_id_local + ", element at " + std::to_string(pos) + " is \"" + string_value + "\"");
 	}
+
 	print_debug(func_name, args, DEXIT());
 	return char_value;
 }
@@ -209,6 +216,7 @@ extern void strdeque_clear(unsigned long id) {
 		all_deques()[id].clear();
 		print_debug(func_name, args, string_id_local + " cleared");
 	}
+
 	print_debug(func_name, args, DEXIT());
 }
 
@@ -231,6 +239,7 @@ extern int strdeque_comp(unsigned long id1, unsigned long id2) {
 	strdeque content2 = all_deques()[id2];
 	int result = content1 < content2 ? -1 : (content1 > content2 ? 1 : 0);
 	print_debug(func_name, args, "result of comparing " + string_id1 + " to " + string_id2 + " is " + std::to_string(result));
+
 	print_debug(func_name, args, DEXIT());
 	return result;
 }
