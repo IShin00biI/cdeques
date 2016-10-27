@@ -88,7 +88,10 @@ extern unsigned long strdeque_new() {
 	all_deques().insert(std::pair<unsigned long, strdeque>(next_id, strdeque()));
 	unsigned long current_id = next_id++;
 
-	print_debug(func_name, args, "created with id = " + std::to_string(current_id));
+	if (current_id < max_u_long())
+		print_debug(func_name, args, "created with id = " + std::to_string(current_id));
+	else
+		print_debug(func_name, args, "created with id = " + std::to_string(current_id) + " = Max Int");
 
 	print_debug(func_name, args, DEXIT());
 	return current_id;
