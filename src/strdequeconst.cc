@@ -15,10 +15,11 @@ static unsigned long init_emptystrdeque() {
 	return id;
 }
 
+// Zwraca identyfikator pustej kolejki dwustronnej, do której nic nie można wstawiać i z której nic nie można usuwać.
 extern unsigned long emptystrdeque() {
 	std::ios_base::Init();
 	// if(DEBUG) std::cerr << "emptystrdeque() invoked" << std::endl;
 	static const unsigned long id = init_emptystrdeque();
-	// if(DEBUG) std::cerr << "emptystrdeque() done with id = " << id  << std::endl;
+	if(DEBUG) std::cerr << "emptystrdeque() invoked and done with id = " << id  << std::endl;
 	return id;
 }

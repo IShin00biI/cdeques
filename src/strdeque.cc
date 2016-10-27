@@ -47,6 +47,7 @@ static std::string string_id(unsigned long& id) {
 	return (id == emptystrdeque() ? EMPTYDEQUE_NAME() : "Deque " + std::to_string(id));
 }
 
+// Funkcja wypisująca komunikaty diagnostyczne
 static void print_debug(const std::string& func_name, const std::string& args, const std::string& comment) {
 	if(DEBUG) {
 		std::ios_base::Init();
@@ -54,6 +55,7 @@ static void print_debug(const std::string& func_name, const std::string& args, c
 	}
 }
 
+// Sprawdzanie czy kolejka o danym id istnieje
 static bool strdeque_exists(const std::string& func_name, const std::string& args, unsigned long& id) {
 	deque_map::iterator found = all_deques().find(id);
 
@@ -65,6 +67,7 @@ static bool strdeque_exists(const std::string& func_name, const std::string& arg
 	return true;
 }
 
+// Zwraca true jeśli deque o identyfikatorze id jest pustą kolejką, false wpp. Ponadto dla pustej kolejki wypisywany jest komunikat diagnostyczny.
 static bool strdeque_is_const_empty(const std::string& func_name, const std::string& args, unsigned long& id) {
 	if(id == emptystrdeque()) {
 		print_debug(func_name, args, "Attempting " + func_name + "on " + EMPTYDEQUE_NAME());
@@ -73,6 +76,7 @@ static bool strdeque_is_const_empty(const std::string& func_name, const std::str
 	return false;
 }
 
+// Tworzy nową, pustą kolejkę dwustronną ciągów znaków i zwraca jej identyfikator.
 extern unsigned long strdeque_new() {
 	static const std::string func_name = "strdeque_new";
 	static const std::string args = "";
@@ -90,6 +94,7 @@ extern unsigned long strdeque_new() {
 	return current_id;
 }
 
+// Jeżeli istnieje kolejka dwustronna o identyfikatorze id, usuwa ją, a w przeciwnym przypadku nic nie robi.
 extern void strdeque_delete(unsigned long id) {
 	static const std::string func_name = "strdeque_delete";
 	const std::string args = string_id(id);
@@ -103,6 +108,7 @@ extern void strdeque_delete(unsigned long id) {
 	print_debug(func_name, args, DEXIT());
 }
 
+// Jeżeli istnieje kolejka dwustronna o identyfikatorze id, zwraca liczbę jej elementów, a w przeciwnym przypadku zwraca 0.
 extern size_t strdeque_size(unsigned long id) {
 	static const std::string func_name = "strdeque_size";
 	const std::string args = string_id(id);
@@ -119,6 +125,7 @@ extern size_t strdeque_size(unsigned long id) {
 	return result;
 }
 
+// Jeżeli istnieje kolejka dwustronna o identyfikatorze id oraz value != NULL, wstawia element value przed pozycją pos lub na koniec kolejki, jeżeli pos  wykracza poza kolejkę. Gwarancje odnośnie kosztów wstawienia na początku, na końcu i w środku mają być takie same jak w przypadku kontenera deque (plus koszt odnalezienia kolejki o danym identyfikatorze). Jeżeli kolejka dwustronna nie istnieje lub value == NULL, to nic nie robi. Pozycje w kolejce numerowane są od zera.
 extern void strdeque_insert_at(unsigned long id, size_t pos, const char* value) {
 	std::string string_value = value == NULL ? "NULL" : std::string(value);
 
@@ -143,6 +150,7 @@ extern void strdeque_insert_at(unsigned long id, size_t pos, const char* value) 
 	print_debug(func_name, args, DEXIT());
 }
 
+// Jeżeli istnieje kolejka dwustronna o identyfikatorze id i pos nie wykracza poza nią, usuwa element na pozycji pos, a w przeciwnym przypadku nic nie robi.
 extern void strdeque_remove_at(unsigned long id, size_t pos) {
 	static const std::string func_name = "strdeque_remove_at";
 	const std::string args = string_id(id) + ", " + std::to_string(pos);
@@ -163,6 +171,7 @@ extern void strdeque_remove_at(unsigned long id, size_t pos) {
 	print_debug(func_name, args, DEXIT());
 }
 
+// Jeżeli istnieje kolejka dwustronna o identyfikatorze id i pos nie wykraczapoza kolejkę, zwraca wskaźnik do elementu na pozycji pos, a w przeciwnym przypadku zwraca NULL.
 extern const char* strdeque_get_at(unsigned long id, size_t pos) {
 	std::string string_id_local = string_id(id);
 
@@ -188,6 +197,7 @@ extern const char* strdeque_get_at(unsigned long id, size_t pos) {
 	return char_value;
 }
 
+// Jeżeli istnieje kolejka dwustronna o identyfikatorze id, usuwa wszystkie jej elementy, a w przeciwnym przypadki nic nie robi.
 extern void strdeque_clear(unsigned long id) {
 	std::string string_id_local = string_id(id);
 
@@ -202,6 +212,11 @@ extern void strdeque_clear(unsigned long id) {
 	print_debug(func_name, args, DEXIT());
 }
 
+// Porównuje leksykograficznie kolejki dwustronne o identyfikatorach id1 i id2, zwracając
+//      -1, gdy kolejka(id1) < kolejka(id2),
+//       0, gdy kolejka(id1) = kolejka(id2),
+//       1, gdy kolejka(id1) > kolejka(id2).
+// Jeżeli kolejka dwustronna o którymś z identyfikatorów nie istnieje, to jest traktowana jako leksykograficznie równa liście pustej.
 extern int strdeque_comp(unsigned long id1, unsigned long id2) {
 	static const std::string func_name = "strdeque_comp";
 	std::string string_id1 = string_id(id1);
