@@ -2,7 +2,11 @@
 #define CDEQUES_STRDEQUE_H
 
 #ifdef __cplusplus
+#include <cstddef>
 extern "C" {
+
+#else
+#include <stddef.h>
 #endif
 
 unsigned long strdeque_new();
