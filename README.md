@@ -1,5 +1,6 @@
 
 **Task description in Polish**
+
 Biblioteka standardowa języka C++ udostępnia bardzo przydatne kontenery (np.
 map i deque), których nie ma w bibliotece C. Kontener deque (kolejka
 dwustronna) jest alternatywą dla kontenera vector, pozwalającą na wstawianie
